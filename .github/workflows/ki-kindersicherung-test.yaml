@@ -1,0 +1,24 @@
+name: KI-Kindersicherung container test
+on:
+  push:
+    branches: [codex/ki-kindersicherung]
+    paths:
+      - ki_kindersicherung/**
+      - .github/workflows/ki-kindersicherung-test.yaml
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: Build amd64 development image
+        run: docker build --tag ki-kindersicherung:test ki_kindersicherung
+      - name: Validate bootstrap and proxy
+        run: |
+          docker run --rm --entrypoint /bin/sh -e SUPERVISOR_TOKEN=test ki-kindersicherung:test -ec '
+            mkdir -p /run/nginx /run/ki/apps/ki_kindersicherung /data/ki_kindersicherung
+            /opt/ki/venv/bin/python /opt/ki/bootstrap.py
+            /opt/ki/venv/bin/python -m py_compile /run/ki/apps/ki_kindersicherung/app.py
+            nginx -t
+          '

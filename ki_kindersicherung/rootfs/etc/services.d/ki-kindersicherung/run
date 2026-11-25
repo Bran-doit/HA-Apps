@@ -1,0 +1,6 @@
+#!/usr/bin/with-contenv bashio
+set -euo pipefail
+mkdir -p /run/nginx /run/ki/apps/ki_kindersicherung /data/ki_kindersicherung
+/opt/ki/venv/bin/python /opt/ki/bootstrap.py
+nginx
+exec /opt/ki/venv/bin/appdaemon -c /run/ki

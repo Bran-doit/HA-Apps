@@ -251,8 +251,9 @@ class KiKindersicherung(hass.Hass):
 
         self.config = config
         self.enabled = bool(config.get("enabled", True))
-        self.tv_display_enabled = bool(config.get("tv_display_enabled", True))
-        self.quiz_tv_display_enabled = bool(config.get("quiz_tv_display_enabled", True))
+        self.tv_display_supported = bool(self.args.get("tv_display_supported", True))
+        self.tv_display_enabled = self.tv_display_supported and bool(config.get("tv_display_enabled", True))
+        self.quiz_tv_display_enabled = self.tv_display_supported and bool(config.get("quiz_tv_display_enabled", True))
         self.debug_mode = bool(config.get("debug_mode", False))
         self.debug_voice_player = str(config.get("debug_voice_player", "")).strip()
         self.debug_display_page = str(config.get("debug_display_page", "task")).lower()
@@ -1390,6 +1391,8 @@ class KiKindersicherung(hass.Hass):
         self._show_tv_page(self.TV_QUIZ_URL, "TV-Wissensquiz")
 
     def _show_tv_page(self, url: str, label: str) -> None:
+        if not self.tv_display_supported:
+            return
         if self.debug_mode:
             self._log_event(f"Debug-Modus: {label} nicht an den Fernseher übergeben")
             return
@@ -1416,6 +1419,8 @@ class KiKindersicherung(hass.Hass):
             self._log_event(f"{label} konnte nicht angezeigt werden")
 
     def _hide_tv_task_page(self, after_speech: bool = False) -> None:
+        if not self.tv_display_supported:
+            return
         if self.debug_mode:
             self._log_event("Debug-Modus: Kein Beenden-Befehl an die TV-Webseiten-Schnittstelle gesendet")
             return

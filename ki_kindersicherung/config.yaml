@@ -1,0 +1,16 @@
+name: KI-Kindersicherung
+version: "0.1.0"
+slug: ki_kindersicherung
+description: Sprachaufgaben, Medienpausen und das Wissensquiz Klugscheißer
+url: https://github.com/Bran-doit/HA-Apps/tree/codex/ki-kindersicherung/ki_kindersicherung
+arch:
+  - amd64
+init: false
+homeassistant_api: true
+ingress: true
+ingress_port: 8099
+panel_admin: true
+panel_icon: mdi:shield-account
+options: {}
+schema: {}
+image: ghcr.io/bran-doit/ki-kindersicherung
