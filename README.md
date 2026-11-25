@@ -8,6 +8,10 @@ Repository für Home-Assistant-Apps (früher Add-ons). Jede App erhält eine eig
 
 - **Shopping Sync** - synchronisiert Home-Assistant-Todo-Listen mit einer mobilen Shopping-App ueber Firebase und bietet eine Ingress-Konfigurationsseite.
 
+## Wiederherstellungspakete
+
+- [LMS Gateway AppDaemon](downloads/lms-gateway-appdaemon/README.md) – ZIP zur Wiederherstellung per PowerShell.
+
 ## In Home Assistant einbinden
 
 Voraussetzung: Home Assistant mit Supervisor/App-Store, regulär Home Assistant OS. Eine reine Home-Assistant-Container-Installation bietet diesen Store nicht.
