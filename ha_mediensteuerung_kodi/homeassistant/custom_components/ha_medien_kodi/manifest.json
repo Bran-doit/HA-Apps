@@ -1,1 +1,11 @@
-{"domain":"ha_medien_kodi","name":"HA-Mediensteuerung auf Kodi","version":"0.4.0","documentation":"https://www.home-assistant.io/docs/automation/trigger/#sentence-trigger","dependencies":["conversation"],"codeowners":[],"iot_class":"local_push"}
+{
+  "domain": "ha_medien_kodi",
+  "name": "HA-Mediensteuerung auf Kodi",
+  "version": "0.5.0",
+  "documentation": "https://github.com/Bran-doit/HA-Apps/tree/main/ha_mediensteuerung_kodi",
+  "dependencies": [
+    "conversation"
+  ],
+  "codeowners": [],
+  "iot_class": "local_push"
+}

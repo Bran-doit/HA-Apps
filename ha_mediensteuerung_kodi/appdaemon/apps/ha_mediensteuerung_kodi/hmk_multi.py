@@ -23,6 +23,7 @@ class HAMedienMultiDashboard(HAMedienDashboard):
 
     def initialize(self):
         self.base = Path(self.args.get("data_dir", "/config/ha_mediensteuerung_kodi"))
+        self.base.mkdir(parents=True, exist_ok=True)
         self.config_path = Path("/homeassistant/ha_medien_kodi_private/players.json")
         self.ui = {"items":[], "total":0, "view":"search", "heading":"Noch keine Suche", "history":[], "busy":False, "error":"", "request_id":"", "target_name":"", "connected":False}
         self.posters = Path("/homeassistant/www/ha-medien-kodi/posters")

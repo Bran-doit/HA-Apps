@@ -1,5 +1,15 @@
 # Änderungen
 
+## 0.5.0 – Veröffentlichungskandidat, noch nicht freigegeben
+
+- Eigener App-Container für amd64 mit fixierter AppDaemon-Laufzeit.
+- Einrichtung mit Datei-Backup, Schutz lokaler Änderungen und Rückrollen bei Fehlern.
+- Übernahme vorhandener Playerdaten und Ausgabepräferenzen; Schutz vor doppeltem Medienbetrieb.
+- Versionsquelle config.yaml; Integrationsmanifest ebenfalls 0.5.0.
+- MIT-Lizenz auf ausdrücklichen Nutzerwunsch.
+- Umstellung erfordert Backup, Deaktivierung nur der alten Medien-App und einen geplanten HA-Neustart. Kein automatischer Umzug produktiver Installationen.
+
+
 ## Unveröffentlicht – Quellcodeexport vom 2026-11-25
 
 - AppDaemon-Anwendung, Home-Assistant-Integration, Dashboard und Satz-Automation zusammengeführt.

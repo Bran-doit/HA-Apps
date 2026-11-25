@@ -38,4 +38,4 @@ Siehe [Arbeitsanweisungen](AGENTS.md) und [Veröffentlichungsablauf](CONTRIBUTIN
 
 ## Entwicklungsstände
 
-- [HA-Mediensteuerung auf Kodi](ha_mediensteuerung_kodi/README.md) – AppDaemon-/HA-Integration; Quellcodeexport, noch kein installierbares Supervisor-Add-on. [Änderungsverlauf](ha_mediensteuerung_kodi/CHANGELOG.md).
+- [HA-Mediensteuerung auf Kodi](ha_mediensteuerung_kodi/README.md) – Eigenständige amd64-App in Vorbereitung (0.5.0); noch nicht im stabilen Katalog freigegeben. [Änderungsverlauf](ha_mediensteuerung_kodi/CHANGELOG.md).

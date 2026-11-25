@@ -1,8 +1,8 @@
 # HA-Mediensteuerung auf Kodi
 
-**Entwicklungsstand für eine vorhandene AppDaemon-Installation. Kein eigenständiges Supervisor-Add-on, kein HACS-Paket und noch keine freigegebene Erstinstallation.**
+**Veröffentlichungskandidat 0.5.0 für eine eigenständige Home-Assistant-App (amd64). Noch nicht im stabilen App-Katalog freigegeben.**
 
-Die Erweiterung verbindet deutsche Sprach- und Textbefehle mit der Kodi-Bibliothek. Sie besteht aus einer AppDaemon-Anwendung, einer Home-Assistant-Integration und einer Dashboard-Karte. Optional lässt sich Emby als Medienquelle oder Wiedergabe-Backend verwenden.
+Die Erweiterung verbindet deutsche Sprach- und Textbefehle mit der Kodi-Bibliothek. Der Container enthält eine eigene AppDaemon-Laufzeit, eine Home-Assistant-Integration und die Dashboard-Karte. Optional lässt sich Emby als Medienquelle oder Wiedergabe-Backend verwenden.
 
 ## Funktionen
 
@@ -17,9 +17,9 @@ Die Erweiterung verbindet deutsche Sprach- und Textbefehle mit der Kodi-Biblioth
 
 ## Voraussetzungen und Einrichtung
 
-Benötigt werden Home Assistant, eine vorhandene AppDaemon-Umgebung mit Python ab 3.10, erreichbare Kodi-JSON-RPC-Schnittstellen und passende Bibliotheksmetadaten. Für Emby sind Serverzugang und ein eigenes Benutzerprofil erforderlich. Eine zusätzliche lokale KI ist für den Suchparser nicht nötig.
+Benötigt werden Home Assistant, ein amd64-System mit Supervisor, erreichbare Kodi-JSON-RPC-Schnittstellen und passende Bibliotheksmetadaten. Für Emby sind Serverzugang und ein eigenes Benutzerprofil erforderlich. Eine zusätzliche lokale KI ist für den Suchparser nicht nötig.
 
-Die Einrichtung erfolgt derzeit manuell: [Installation, Konfiguration und Betrieb](DOCS.md). Vor Änderungen ein Backup erstellen. Der Ordner wird bewusst nicht als App im Supervisor-Katalog angeboten.
+Der Einrichtungsmodus installiert die HA-Begleitdateien mit Sicherung; HA-Konfiguration und Neustart bleiben bewusste Schritte: [Installation, Konfiguration und Betrieb](DOCS.md). Vor Änderungen ein Backup erstellen. Der Ordner wird bewusst nicht als App im Supervisor-Katalog angeboten.
 
 Beispiele: „Suche Filme mit Harrison Ford“, „Suche die neueste Staffel von Andor“, „Suche die nächste ungesehene Folge von Andor“, „Kodi spiel den ersten Film“. Raumangaben wie „im Wohnzimmer“ haben Vorrang vor der Zuordnung des Spracheingabegeräts.
 
@@ -27,12 +27,12 @@ Beispiele: „Suche Filme mit Harrison Ford“, „Suche die neueste Staffel von
 
 „Neueste“ bedeutet zuletzt zur Bibliothek hinzugefügt, nicht zuletzt veröffentlicht. Eine später ergänzte Folge kann eine ältere Staffel als zuletzt hinzugefügt kennzeichnen. Bei fehlenden Datumswerten erfolgt eine Fehlermeldung. Kodi-Dubletten werden nur bei übereinstimmenden Identitätsdaten zusammengeführt; die Datenbank selbst bleibt unverändert.
 
-Die Konfiguration setzt bestimmte AppDaemon-Mounts voraus. Die Eingabegeräte-Zuordnung liest Home Assistants lokale Geräte-/Raumregistrierung. Emby-Funktionen hängen von Profilrechten und den Fähigkeiten der ausgewählten Clients ab. Das bereinigte Exportpaket wurde nicht auf einer frischen HA-Testinstanz installiert.
+Die App benötigt Schreibzugriff auf die HA-Konfiguration sowie Lesezugriff auf App-Konfigurationen für die Umzugsprüfung. Die Eingabegeräte-Zuordnung liest Home Assistants lokale Geräte-/Raumregistrierung. Emby-Funktionen hängen von Profilrechten und den Fähigkeiten der ausgewählten Clients ab. Das bereinigte Exportpaket wurde nicht auf einer frischen HA-Testinstanz installiert.
 
 ## Entwicklung, Updates und Lizenz
 
 Offline-Prüfung: `python ha_mediensteuerung_kodi/tools/check.py` aus dem Repository-Hauptverzeichnis. Optional zusätzlich `node --check ha_mediensteuerung_kodi/homeassistant/www/ha-medien-kodi/card.js`.
 
-Dieser Branch dient der Quellcodesicherung und Prüfung. Keine automatische Aktualisierung bestehender Installationen, kein Release, kein Container. Die vorhandene Integrationsversion 0.4.0 bleibt unverändert; der Git-Commit identifiziert diesen Entwicklungsstand.
+Dieser Branch enthält den installierbaren Containerkandidaten und seine Prüfungen. Eine stabile Veröffentlichung und eine echte Supervisor-Testinstallation stehen noch aus. Versionsquelle ist config.yaml (0.5.0); das Integrationsmanifest muss dazu passen. Build-Artefakte sind Testpakete, kein öffentlicher Updatekanal. [Freigabeablauf](RELEASE.md).
 
 [Änderungsverlauf](CHANGELOG.md) · [Projektregeln](AGENTS.md) · [Lizenzstatus](LICENSE.md) · [Fremdkomponenten](THIRD_PARTY.md)

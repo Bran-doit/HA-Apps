@@ -1,0 +1,40 @@
+name: Mediensteuerung preparation
+on:
+  push:
+    branches: [codex/ha-mediensteuerung-kodi]
+    paths: ['ha_mediensteuerung_kodi/**', '.github/workflows/medien-prepare.yaml']
+  pull_request:
+    paths: ['ha_mediensteuerung_kodi/**', '.github/workflows/medien-prepare.yaml']
+permissions:
+  contents: read
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
+        with:
+          python-version: '3.12'
+      - run: pip install PyYAML==6.0.3
+      - run: python ha_mediensteuerung_kodi/tools/check.py
+      - run: node --check ha_mediensteuerung_kodi/homeassistant/www/ha-medien-kodi/card.js
+      - name: Build amd64 image (no publication)
+        run: docker build --platform linux/amd64 -t medien-candidate:ci ha_mediensteuerung_kodi
+      - name: Container smoke checks
+        run: |
+          docker run --rm medien-candidate:ci --self-test
+          docker run --rm --entrypoint pip medien-candidate:ci check
+          docker run --rm --entrypoint appdaemon medien-candidate:ci --version
+          docker run --rm --entrypoint python -v "$PWD/ha_mediensteuerung_kodi/tests:/opt/medien/tests:ro" -v "$PWD/ha_mediensteuerung_kodi/tools:/opt/medien/tools:ro" medien-candidate:ci /opt/medien/tools/check.py
+      - name: Export tested image and checksum
+        run: |
+          docker save medien-candidate:ci | gzip > medien-amd64-candidate.tar.gz
+          sha256sum medien-amd64-candidate.tar.gz > medien-amd64-candidate.tar.gz.sha256
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: medien-amd64-${{ github.sha }}
+          path: |
+            medien-amd64-candidate.tar.gz
+            medien-amd64-candidate.tar.gz.sha256
+          retention-days: 14
