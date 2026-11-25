@@ -27,6 +27,8 @@ jobs:
           docker run --rm --entrypoint pip medien-candidate:ci check
           docker run --rm --entrypoint appdaemon medien-candidate:ci --version
           docker run --rm --entrypoint python -v "$PWD/ha_mediensteuerung_kodi/tests:/opt/medien/tests:ro" -v "$PWD/ha_mediensteuerung_kodi/tools:/opt/medien/tools:ro" medien-candidate:ci /opt/medien/tools/check.py
+      - name: Isolated runtime startup
+        run: docker run --rm --entrypoint python -v "$PWD/ha_mediensteuerung_kodi/tools:/opt/medien/tools:ro" medien-candidate:ci /opt/medien/tools/container_start_test.py
       - name: Export tested image and checksum
         run: |
           docker save medien-candidate:ci | gzip > medien-amd64-candidate.tar.gz
