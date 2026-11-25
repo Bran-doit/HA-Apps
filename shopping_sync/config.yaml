@@ -1,0 +1,35 @@
+name: "Shopping Sync"
+version: "0.1.0"
+slug: "shopping_sync"
+description: "Synchronisiert Home-Assistant-Todo-Listen mit der mobilen Shopping-App ueber Firebase."
+url: "https://github.com/Bran-doit/HA-Apps/tree/main/shopping_sync"
+arch:
+  - aarch64
+  - amd64
+init: false
+homeassistant_api: true
+auth_api: true
+ingress: true
+panel_icon: "mdi:cart"
+panel_title: "Shopping Sync"
+options:
+  firebase_api_key: ""
+  firebase_email: ""
+  firebase_password: ""
+  firebase_database_url: ""
+  firebase_project_id: ""
+  firebase_app_id: ""
+  realtime: true
+  lists: []
+schema:
+  firebase_api_key: "password"
+  firebase_email: "email"
+  firebase_password: "password"
+  firebase_database_url: "url"
+  firebase_project_id: "str?"
+  firebase_app_id: "str?"
+  realtime: "bool"
+  lists:
+    - "str"
+image: "ghcr.io/bran-doit/shopping-sync"
+

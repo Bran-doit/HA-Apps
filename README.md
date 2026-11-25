@@ -4,9 +4,9 @@ Repository für Home-Assistant-Apps (früher Add-ons). Jede App erhält eine eig
 
 [![Repository zu Home Assistant hinzufügen](https://my.home-assistant.io/badges/supervisor_add_addon_repository.svg)](https://my.home-assistant.io/redirect/supervisor_add_addon_repository/?repository_url=https%3A%2F%2Fgithub.com%2FBran-doit%2FHA-Apps)
 
-## Stand
+## Verfuegbare Apps
 
-Die Repository-Grundstruktur ist eingerichtet. **Noch keine installierbare App enthalten.** Es gibt noch keinen Container-Build oder Release-Workflow. Die erste Anwendung wird mit ihrer eigenen Konfiguration, Dokumentation und getesteten Veröffentlichung ergänzt. Die Installation in einer Home-Assistant-Instanz wurde noch nicht geprüft.
+- **Shopping Sync** - synchronisiert Home-Assistant-Todo-Listen mit einer mobilen Shopping-App ueber Firebase und bietet eine Ingress-Konfigurationsseite.
 
 ## In Home Assistant einbinden
 
@@ -18,7 +18,7 @@ Unter **Einstellungen → Apps → App installieren → Menü ⋮ → Repositori
 https://github.com/Bran-doit/HA-Apps
 ```
 
-Alternativ den Hinzufügen-Link oben verwenden. Solange keine Apps veröffentlicht wurden, erscheinen keine installierbaren Einträge. Später wird jede App einzeln angeboten; die Repository-Adresse bleibt gleich.
+Alternativ den Hinzufuegen-Link oben verwenden. Jede App wird einzeln angeboten; die Repository-Adresse bleibt gleich.
 
 ## Installation und Updates
 

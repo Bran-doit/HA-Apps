@@ -1,0 +1,97 @@
+#!/usr/bin/with-contenv bashio
+set -euo pipefail
+
+APP_ROOT="/opt/shopping-sync"
+CONFIG_ROOT="/data/appdaemon"
+APP_DATA="/data/shopping_sync"
+OPTIONS="/data/options.json"
+
+mkdir -p "${CONFIG_ROOT}/apps" "${APP_DATA}/logs" /run/nginx
+ln -sfn "${APP_ROOT}/apps/shopping_sync" "${CONFIG_ROOT}/apps/shopping_sync"
+ln -sfn "${APP_DATA}/config.yaml" "${APP_ROOT}/apps/shopping_sync/config.yaml"
+ln -sfn "${APP_DATA}/logs" "${APP_ROOT}/apps/shopping_sync/logs"
+
+if [[ ! -s "${APP_DATA}/config.yaml" ]]; then
+  api_key="$(bashio::config 'firebase_api_key')"
+  email="$(bashio::config 'firebase_email')"
+  password="$(bashio::config 'firebase_password')"
+  database_url="$(bashio::config 'firebase_database_url')"
+  project_id="$(bashio::config 'firebase_project_id')"
+  app_id="$(bashio::config 'firebase_app_id')"
+  realtime="$(bashio::config 'realtime')"
+
+  for value_name in api_key email password database_url; do
+    if [[ -z "${!value_name}" ]]; then
+      bashio::exit.nok "Firebase-Einstellung '${value_name}' fehlt. Bitte zuerst die App-Optionen ausfuellen."
+    fi
+  done
+
+  idle_mode="true"
+  [[ "${realtime}" == "true" ]] && idle_mode="false"
+
+  jq -n \
+    --arg api_key "${api_key}" \
+    --arg email "${email}" \
+    --arg password "${password}" \
+    --arg database_url "${database_url}" \
+    --arg project_id "${project_id}" \
+    --arg app_id "${app_id}" \
+    --argjson idle_mode "${idle_mode}" \
+    --argjson lists "$(jq '.lists // []' "${OPTIONS}")" \
+    '{
+      firebase: {
+        api_key: $api_key,
+        email: $email,
+        password: $password,
+        database_url: $database_url,
+        project_id: $project_id,
+        app_id: $app_id
+      },
+      websocket: {timeout_seconds: 30},
+      runtime: {
+        idle_mode: $idle_mode,
+        ha_watchdog_enabled: true,
+        ha_watchdog_seconds: 30,
+        ha_watchdog_debounce_seconds: 3,
+        ha_periodic_sync_minutes: 10,
+        ha_realtime_burst_seconds: 10,
+        firebase_auto_reconnect_enabled: true
+      },
+      home_assistant: {sync_list_sensors: false},
+      appdaemon: {
+        status_entity_id: "sensor.shopping_sync_status",
+        trigger_cooldown_seconds: 3,
+        admin_route: "shopping_sync_admin"
+      }
+    } + (if ($lists | length) > 0 then {list_names: $lists} else {} end)' \
+    > "${APP_DATA}/config.yaml"
+  chmod 600 "${APP_DATA}/config.yaml"
+fi
+
+cat > "${CONFIG_ROOT}/appdaemon.yaml" <<EOF
+appdaemon:
+  time_zone: Europe/Berlin
+  latitude: 0
+  longitude: 0
+  elevation: 0
+  plugins:
+    HASS:
+      type: hass
+      ha_url: http://supervisor/core
+      token: ${SUPERVISOR_TOKEN}
+http:
+  url: http://127.0.0.1:5050
+api:
+admin:
+EOF
+
+cat > "${CONFIG_ROOT}/apps/apps.yaml" <<'EOF'
+shopping_sync:
+  module: shopping_sync.shopping_sync_app
+  class: ShoppingSyncApp
+EOF
+
+bashio::log.info "Starte Shopping Sync mit eingebettetem AppDaemon."
+nginx
+exec "${APP_ROOT}/venv/bin/appdaemon" -c "${CONFIG_ROOT}"
+

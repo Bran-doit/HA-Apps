@@ -1,0 +1,18 @@
+configuration:
+  firebase_api_key:
+    name: Firebase API-Schluessel
+  firebase_email:
+    name: E-Mail des Shopping-App-Kontos
+  firebase_password:
+    name: Passwort des Shopping-App-Kontos
+  firebase_database_url:
+    name: Firebase-Datenbank-URL
+  firebase_project_id:
+    name: Firebase-Projekt-ID
+  firebase_app_id:
+    name: Firebase-App-ID
+  realtime:
+    name: Echtzeitsynchronisation
+  lists:
+    name: Fest verknuepfte Listen
+
