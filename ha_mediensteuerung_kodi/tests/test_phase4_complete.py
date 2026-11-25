@@ -1,4 +1,5 @@
 import importlib.util
+import time
 import sys
 import unittest
 from pathlib import Path
@@ -121,7 +122,7 @@ class CatalogTests(unittest.TestCase):
         self.assertIs(source.title_catalog('movie'),items);self.assertEqual(len(client.calls),2)
     def test_expired_cache_refreshes(self):
         client=self.client(1);source=KodiMediaSource(client);source.title_catalog('movie')
-        source._catalog['movie']=(0,());source.title_catalog('movie');self.assertEqual(len(client.calls),2)
+        source._catalog['movie']=(time.monotonic()-301,());source.title_catalog('movie');self.assertEqual(len(client.calls),2)
     def test_incomplete_never_cached(self):
         source=KodiMediaSource(self.client(fail=True))
         with self.assertRaises(MediaError):source.title_catalog('movie')
