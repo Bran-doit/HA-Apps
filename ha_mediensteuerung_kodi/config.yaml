@@ -5,6 +5,7 @@ description: Deutsche Mediensuche, Kodi- und Emby-Steuerung mit Home-Assistant-D
 url: https://github.com/Bran-doit/HA-Apps/tree/main/ha_mediensteuerung_kodi
 arch:
   - amd64
+stage: experimental
 startup: application
 boot: manual
 init: true

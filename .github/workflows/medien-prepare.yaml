@@ -19,6 +19,10 @@ jobs:
       - run: pip install PyYAML==6.0.3
       - run: python ha_mediensteuerung_kodi/tools/check.py
       - run: node --check ha_mediensteuerung_kodi/homeassistant/www/ha-medien-kodi/card.js
+      - name: Validate Home Assistant app metadata
+        uses: frenck/action-addon-linter@7993f86f9d5af029d26fbcb0d00d445a476ba9c3 # v2.21
+        with:
+          path: ./ha_mediensteuerung_kodi
       - name: Build amd64 image (no publication)
         run: docker build --platform linux/amd64 -t medien-candidate:ci ha_mediensteuerung_kodi
       - name: Container smoke checks
