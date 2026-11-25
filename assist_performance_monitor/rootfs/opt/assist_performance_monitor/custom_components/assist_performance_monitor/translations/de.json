@@ -1,0 +1,18 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Assist Performance Monitor",
+        "description": "Erfasst Diagnosezeiten abgeschlossener Assist-Pipeline-Läufe.",
+        "data": {
+          "include_text": "Erkannten Text und Antwort speichern",
+          "scan_interval": "Abfrageintervall in Sekunden",
+          "history_size": "Anzahl der Laufzeiten für Statistiken"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Assist Performance Monitor ist bereits eingerichtet."
+    }
+  }
+}

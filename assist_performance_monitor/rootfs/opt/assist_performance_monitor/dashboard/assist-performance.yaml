@@ -1,0 +1,266 @@
+title: Assist Performance
+views:
+  - title: Übersicht · v0.2.2
+    path: overview
+    icon: mdi:chart-timeline-variant-shimmer
+    badges: []
+    cards:
+      - type: markdown
+        content: |
+          # Assist Performance
+          **Version 0.2.2**
+
+          Durchschnittliche Laufzeiten und Qualität der bisher erfassten
+          Anfragen vom Home Assistant Voice PE.
+
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.assist_performance_monitor_assist_average_duration
+            name: Durchschnitt
+            min: 0
+            max: 15000
+            needle: true
+            severity:
+              green: 0
+              yellow: 5000
+              red: 9000
+          - type: gauge
+            entity: sensor.assist_performance_monitor_assist_p90_duration
+            name: P90 (90. Perzentil)
+            min: 0
+            max: 15000
+            needle: true
+            severity:
+              green: 0
+              yellow: 6000
+              red: 10000
+
+      - type: horizontal-stack
+        cards:
+          - type: gauge
+            entity: sensor.assist_performance_monitor_assist_performance_trend
+            name: Tendenz (− schneller / + langsamer)
+            min: -50
+            max: 50
+            needle: true
+            severity:
+              green: -50
+              yellow: -5
+              red: 5
+          - type: entities
+            title: Nutzungsbereinigte Systemtendenz
+            show_header_toggle: false
+            entities:
+              - entity: sensor.assist_performance_monitor_assist_trend_current_average
+                name: Aktuell – letzte 2–3 aktive Tage
+                icon: mdi:speedometer
+              - entity: sensor.assist_performance_monitor_assist_trend_reference_average
+                name: Referenz – vorherige aktive Tage
+                icon: mdi:history
+              - entity: sensor.assist_performance_monitor_assist_performance_trend
+                name: Veränderung
+                icon: mdi:chart-timeline-variant-shimmer
+
+      - type: markdown
+        content: |
+          **Nutzungsbereinigte Tendenz:** Grundlage ist die Reaktionszeit nach
+          Ende der Spracheingabe. Zuerst wird für jeden ausreichend belegten
+          aktiven Tag und getrennt für lokale bzw. externe Verarbeitung der
+          Median gebildet. Anschließend werden die aktiven Tage und beide
+          Verarbeitungsarten gleich gewichtet. Dadurch zählt ein Wochenende mit
+          sehr vielen Anfragen nicht stärker als ein anderer aktiver Tag. Tage
+          ohne Anfragen werden übersprungen. Verglichen werden die letzten zwei
+          bis drei ausreichend belegten aktiven Tage mit bis zu sieben früheren
+          aktiven Tagen. Werte zwischen −5 % und +5 % gelten als stabil. Bei zu
+          wenigen Daten bleibt die Anzeige unbekannt.
+
+          In der 7-Tage-Grafik werden **Nutzungsbereinigter Trend** und
+          **Referenzniveau** in Millisekunden gemeinsam mit den Antwortzeiten
+          dargestellt. Der prozentuale Sensor dient nur der Bewertung
+          schneller/stabil/langsamer; wegen seiner Einheit `%` würde Home
+          Assistant ihn in einem separaten Diagrammbereich darstellen.
+
+      # Keep the 7-day chart directly below these two gauges. A vertical stack
+      # prevents the masonry layout from moving the chart to another column.
+      - type: vertical-stack
+        cards:
+          - type: horizontal-stack
+            cards:
+              - type: gauge
+                entity: sensor.assist_performance_monitor_assist_local_intent_percentage
+                name: Lokal verarbeitet
+                min: 0
+                max: 100
+                needle: true
+                severity:
+                  red: 0
+                  yellow: 40
+                  green: 70
+              - type: gauge
+                entity: sensor.assist_performance_monitor_assist_error_rate
+                name: Fehlerquote
+                min: 0
+                max: 100
+                needle: true
+                severity:
+                  green: 0
+                  yellow: 5
+                  red: 15
+          - type: statistics-graph
+            title: Antwortzeiten der letzten 7 Tage
+            chart_type: line
+            period: hour
+            days_to_show: 7
+            stat_types:
+              - mean
+              - max
+            entities:
+              - entity: sensor.assist_performance_monitor_assist_total_duration
+                name: Gesamtdauer
+              - entity: sensor.assist_performance_monitor_assist_stt_duration
+                name: STT
+              - entity: sensor.assist_performance_monitor_assist_agent_duration
+                name: Agent
+              - entity: sensor.assist_performance_monitor_assist_reaction_time
+                name: Reaktion
+              - entity: sensor.assist_performance_monitor_assist_trend_current_average
+                name: Nutzungsbereinigter Trend
+              - entity: sensor.assist_performance_monitor_assist_trend_reference_average
+                name: Referenzniveau
+
+      - type: entities
+        title: Zusammenfassung
+        show_header_toggle: false
+        entities:
+          - entity: sensor.assist_performance_monitor_assist_monitored_runs
+            name: Ausgewertete Anfragen
+            icon: mdi:counter
+          - entity: sensor.assist_performance_monitor_assist_average_duration
+            name: Durchschnittliche Gesamtdauer (arithmetisches Mittel)
+          - entity: sensor.assist_performance_monitor_assist_p90_duration
+            name: P90-Gesamtdauer (90 % der Anfragen sind schneller)
+          - entity: sensor.assist_performance_monitor_assist_local_intent_percentage
+            name: Anteil lokal verarbeiteter Intents (processed_locally)
+          - entity: sensor.assist_performance_monitor_assist_error_rate
+            name: Fehlerquote (Läufe mit Error-Event)
+
+      - type: entities
+        title: Lokal und extern im Vergleich
+        show_header_toggle: false
+        entities:
+          - entity: sensor.assist_performance_monitor_assist_local_average_duration
+            name: Lokal – Durchschnitt (lokal verarbeitete Intents)
+            icon: mdi:home-clock-outline
+          - entity: sensor.assist_performance_monitor_assist_local_p90_duration
+            name: Lokal – P90 (90 % der lokalen Anfragen sind schneller)
+            icon: mdi:home-analytics
+          - entity: sensor.assist_performance_monitor_assist_external_average_duration
+            name: Extern – Durchschnitt (externer Conversation Agent)
+            icon: mdi:cloud-clock-outline
+          - entity: sensor.assist_performance_monitor_assist_external_p90_duration
+            name: Extern – P90 (90 % der externen Anfragen sind schneller)
+            icon: mdi:cloud-percent-outline
+
+      - type: entities
+        title: Letzte Anfrage
+        show_header_toggle: false
+        entities:
+          - entity: sensor.assist_performance_monitor_assist_total_duration
+            name: Gesamtdauer der HA-Pipeline (run-start bis run-end)
+          - entity: sensor.assist_performance_monitor_assist_stt_duration
+            name: STT einschließlich Spracheingabe (stt-start bis stt-end)
+          - entity: sensor.assist_performance_monitor_assist_agent_duration
+            name: Conversation Agent / Intent (intent-start bis intent-end)
+          - entity: sensor.assist_performance_monitor_assist_reaction_time
+            name: Reaktionszeit nach Spracheingabe (stt-end bis erste Reaktion)
+          - entity: sensor.assist_performance_monitor_assist_tts_orchestration_duration
+            name: TTS-Orchestrierung (tts-start bis tts-end)
+
+      - type: entities
+        title: Reaktionszeit lokal und extern
+        show_header_toggle: false
+        entities:
+          - entity: sensor.assist_performance_monitor_assist_local_average_reaction_time
+            name: Lokal – Durchschnitt der Reaktionszeit
+            icon: mdi:home-clock-outline
+          - entity: sensor.assist_performance_monitor_assist_local_p90_reaction_time
+            name: Lokal – P90 der Reaktionszeit
+            icon: mdi:home-analytics
+          - entity: sensor.assist_performance_monitor_assist_external_average_reaction_time
+            name: Extern – Durchschnitt der Reaktionszeit
+            icon: mdi:cloud-clock-outline
+          - entity: sensor.assist_performance_monitor_assist_external_p90_reaction_time
+            name: Extern – P90 der Reaktionszeit
+            icon: mdi:cloud-percent-outline
+
+      - type: markdown
+        content: |
+          **Parameter:**  
+          **Gesamtdauer der HA-Pipeline** misst die Zeit von `run-start` bis
+          `run-end` innerhalb von Home Assistant.  
+          **STT einschließlich Spracheingabe** misst `stt-start` bis `stt-end`
+          und enthält deshalb auch Sprechen, Audioübertragung und VAD-Anteile.  
+          **Conversation Agent / Intent** misst `intent-start` bis `intent-end`
+          und umfasst lokale Intent-Verarbeitung oder externe Agent-Antworten.  
+          **Reaktionszeit nach Spracheingabe** misst ab `stt-end`, also nachdem
+          Home Assistant die vollständige Spracheingabe als Text erkannt hat,
+          bis zur ersten erkennbaren Reaktion des Assistants. Bei streamenden
+          Agents ist das das erste `intent-progress`, sonst `intent-end`.  
+          **TTS-Orchestrierung** misst `tts-start` bis `tts-end`, also die
+          Einrichtung der TTS-Ausgabe in Home Assistant.  
+          **Durchschnitt** ist das arithmetische Mittel der gespeicherten
+          Pipeline-Gesamtdauern. Einzelne sehr langsame Ausreißer können diesen
+          Wert deutlich nach oben ziehen.  
+          **P90 (90. Perzentil)** bedeutet: 90 % der gemessenen Anfragen waren
+          schneller oder gleich schnell wie dieser Wert; nur die langsamsten
+          10 % lagen darüber. Beispiel: Ein P90 von 16.000 ms heißt, dass neun
+          von zehn ausgewerteten Anfragen höchstens 16 Sekunden gedauert haben.
+          P90 ist deshalb oft aussagekräftiger als der Durchschnitt, wenn es
+          gelegentlich einzelne sehr langsame Antworten gibt.  
+          **Lokal/Extern** wird über `processed_locally` aus `intent-end`
+          klassifiziert.  
+          **Fehlerquote** ist der Anteil abgeschlossener Läufe mit Error-Event.
+
+          **Einordnung:** Die STT-Zeit enthält auch Sprechen, Audioübertragung
+          und Spracherkennung. Die TTS-Zeit beschreibt derzeit nur die
+          Orchestrierung in Home Assistant, nicht die vollständige Wiedergabe.
+          Die Reaktionszeit ist die sinnvollste Näherung für die gefühlte
+          Bedenkzeit nach der gesprochenen Frage, enthält aber weiterhin die
+          Home-Assistant-Intent-Verarbeitung und mögliche Tool-/Aktionsaufrufe.
+          Erkannter Text und Antworten werden nicht gespeichert.
+
+      - type: history-graph
+        title: Reaktionszeit lokal und extern
+        hours_to_show: 168
+        entities:
+          - entity: sensor.assist_performance_monitor_assist_local_average_reaction_time
+            name: Lokal – Durchschnitt
+          - entity: sensor.assist_performance_monitor_assist_local_p90_reaction_time
+            name: Lokal – P90
+          - entity: sensor.assist_performance_monitor_assist_external_average_reaction_time
+            name: Extern – Durchschnitt
+          - entity: sensor.assist_performance_monitor_assist_external_p90_reaction_time
+            name: Extern – P90
+
+      - type: history-graph
+        title: Durchschnitt und P90 (90. Perzentil)
+        hours_to_show: 168
+        entities:
+          - entity: sensor.assist_performance_monitor_assist_average_duration
+            name: Durchschnitt
+          - entity: sensor.assist_performance_monitor_assist_p90_duration
+            name: P90 (90. Perzentil)
+
+      - type: history-graph
+        title: Lokal und extern
+        hours_to_show: 168
+        entities:
+          - entity: sensor.assist_performance_monitor_assist_local_average_duration
+            name: Lokal – Durchschnitt
+          - entity: sensor.assist_performance_monitor_assist_local_p90_duration
+            name: Lokal – P90 (90. Perzentil)
+          - entity: sensor.assist_performance_monitor_assist_external_average_duration
+            name: Extern – Durchschnitt
+          - entity: sensor.assist_performance_monitor_assist_external_p90_duration
+            name: Extern – P90 (90. Perzentil)

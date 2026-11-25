@@ -1,0 +1,18 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Assist Performance Monitor",
+        "description": "Collect diagnostic timing data from completed Assist pipeline runs.",
+        "data": {
+          "include_text": "Store recognized and response text",
+          "scan_interval": "Scan interval in seconds",
+          "history_size": "Number of durations retained for statistics"
+        }
+      }
+    },
+    "abort": {
+      "already_configured": "Assist Performance Monitor is already configured."
+    }
+  }
+}
