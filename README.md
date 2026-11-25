@@ -35,3 +35,7 @@ Siehe [Arbeitsanweisungen](AGENTS.md) und [Veröffentlichungsablauf](CONTRIBUTIN
 ## Referenzen
 
 [Repository-Struktur](https://contributors.home-assistant.io/apps/guides/repository/) · [Veröffentlichung](https://contributors.home-assistant.io/apps/guides/publishing/)
+
+## Ergänzungen im Entwicklungsstand
+
+- [Family Link Dashboard und Nutzungsverlauf](family_link_dashboard/README.md): manuell installierte Lovelace-/AppDaemon-Erweiterung; keine Supervisor-App und kein Container-Release. Basiert auf der separat erforderlichen Drittintegration noiwid/HAFamilyLink.

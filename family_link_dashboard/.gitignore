@@ -1,0 +1,8 @@
+# Private Laufzeitdaten und lokale Tests niemals veröffentlichen
+__pycache__/
+*.pyc
+*archive.json
+*.tmp
+.env*
+secrets.yaml
+*result.json

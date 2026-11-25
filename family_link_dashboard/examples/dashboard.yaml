@@ -1,0 +1,25 @@
+title: Family Link
+views:
+  - title: Nutzung
+    path: steuerung
+    cards:
+      - type: custom:family-link-usage-card
+  - title: Apps
+    path: apps
+    cards:
+      - type: custom:family-link-usage-card
+        mode: apps
+        title: Apps mit Tageslimit
+        category: apps_with_time_limits
+      - type: custom:family-link-usage-card
+        mode: apps
+        title: Unbegrenzte Zeit
+        category: always_allowed_apps
+      - type: custom:family-link-usage-card
+        mode: apps
+        title: Gesperrte Apps
+        category: blocked_apps
+      - type: custom:family-link-usage-card
+        mode: apps
+        title: Ohne eigenes App-Limit
+        category: apps_without_limits

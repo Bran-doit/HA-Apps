@@ -1,0 +1,7 @@
+family_link_usage_archive:
+  module: fl_usage_archive
+  class: FamilyLinkUsageArchive
+  source_entity: sensor.child_tablet_daily_screen_time
+  output_entity: sensor.child_tablet_usage_history
+  time_zone: Europe/Berlin
+  archive_path: /config/apps/family_link_usage/usage_daily_archive.json
