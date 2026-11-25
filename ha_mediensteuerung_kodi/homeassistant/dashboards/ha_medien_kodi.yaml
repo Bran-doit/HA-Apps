@@ -1,0 +1,98 @@
+title: HA-Mediensteuerung auf Kodi
+views:
+  - title: Mediensuche
+    path: suche
+    icon: mdi:movie-search
+    panel: true
+    cards:
+      - type: custom:ha-medien-kodi-card-v16
+  - title: Konfiguration
+    path: konfiguration
+    icon: mdi:cog
+    panel: true
+    cards:
+      - type: custom:ha-medien-kodi-config-v4
+  - title: Befehle & Beispiele
+    path: befehle
+    icon: mdi:help-circle-outline
+    cards:
+      - type: markdown
+        content: |
+          # Befehle & Beispiele
+          Sprich die Beispiele über deine eingerichtete Home-Assistant-Sprachsteuerung. Die Titel sind Beispiele und müssen in deiner Bibliothek vorhanden sein.
+
+          **Wichtig:** Ein Sprachbefehl braucht das Wort **Film**, **Staffel** oder **Folge**. Auch **Kinderfilm** und **Familienfilm** werden erkannt. Dadurch bleiben Medienbefehle von der LMS-Musiksteuerung getrennt.
+
+          In der Testzeile auf der Registerkarte **Mediensuche** gibst du vollständige Textbefehle ein, zum Beispiel **„Suche den Film Matrix“**. Sie verwendet dieselbe Auswertung wie die Sprachsteuerung. **Ausführen** führt den Befehl aus; **Ohne Wiedergabe** prüft ohne Filmstart. Antworten wie **„Kodi spiel den ersten Film“** gehören zur vorherigen Auswahl in derselben geöffneten Karte. Eine Auswahl aus einem Probelauf bleibt ebenfalls ohne Wiedergabe; für einen echten Start den vollständigen Befehl im Modus Ausführen erneut eingeben.
+      - type: markdown
+        content: |
+          ## Filme starten
+          - **„Spiel den Film Matrix.“** – startet einen eindeutig erkannten Titel.
+          - **„Spiele mir bitte den Film Matrix.“** – dieselbe Aktion mit einer anderen Formulierung.
+          - **„Starte den Film Matrix.“** – alternative Startformulierung.
+          - **„Gib mir den Film Matrix wieder.“** – weitere Variante für einen konkreten Titel.
+          - **„Spiel den Film Matrix von 1999.“** – grenzt gleichnamige Filme nach Erscheinungsjahr ein.
+          - **„Spiel den Film Matrix aus dem Jahr 1999.“** – gleichwertige Jahresangabe.
+
+          Ein unvollständiger oder mehrdeutiger Titel führt zu einer Auswahl statt zu einem beliebigen Start. **Ein Start ersetzt bei gesetztem Haken „Laufende Wiedergabe ersetzen“ die laufende Wiedergabe**, wie im Dashboard festgelegt.
+      - type: markdown
+        content: |
+          ## Serien und Folgen
+          - **„Spiel Folge 3 von Staffel 1 von Downton Abbey.“**
+          - **„Spiel Staffel 1 Folge 3 von Downton Abbey.“**
+          - **„Spiel Folge drei von Staffel eins von Downton Abbey.“**
+
+          Diese Varianten wählen dieselbe konkrete Folge. Für Staffel und Folge kannst du Ziffern oder Zahlwörter von eins bis zwanzig verwenden.
+
+          **„Spiel die nächste Folge von Downton Abbey.“** oder **„Spiel die nächste ungesehene Folge von Downton Abbey.“** wählt die erste noch ungesehene reguläre Folge in Staffel-/Folgenreihenfolge. Ein vorhandener Fortsetzungspunkt wird berücksichtigt. Entscheidend sind die verfügbaren Folgen und der Gesehen-Status des verwendeten Profils.
+
+          **„Suche die neueste Folge von Downton Abbey“** listet die zuletzt zur Bibliothek hinzugefügte reguläre Folge auf. Entscheidend ist das gespeicherte Hinzufügedatum, nicht Staffelnummer, Folgennummer oder Erscheinungsdatum. Bei gleichem Datum werden mehrere Treffer angeboten. **„Suche die neueste Staffel von Downton Abbey“** listet die Folgen der Staffel mit den zuletzt hinzugefügten Episoden auf. Eine nachträglich ergänzte Folge kann daher auch eine ältere Staffel als aktuell kennzeichnen. „Zuletzt hinzugefügte“ und „neuste“ sind ebenfalls möglich. Fehlende Datumsangaben werden gemeldet. „Nächste Folge“ bedeutet weiterhin nächste ungesehene Folge.
+      - type: markdown
+        content: |
+          ## Nach Eigenschaften suchen
+          - **„Finde einen Film mit Harrison Ford.“** – Schauspielersuche; möglichst vollständigen Namen nennen.
+          - **„Finde einen ungesehenen Film mit Harrison Ford.“** – kombiniert Schauspieler und Gesehen-Status.
+          - **„Finde einen Science-Fiction-Film aus den Achtzigern.“** – Genre und Jahrzehnt.
+          - **„Finde einen Thriller-Film unter 120 Minuten.“** – Genre und maximale Laufzeit.
+          - **„Finde einen Kinderfilm unter 90 Minuten.“** – Familie/Animation, standardmäßig FSK bis 6, mit Laufzeitfilter.
+          - **„Finde einen Film für Kinder ab 12 Jahren.“** – Familie/Animation mit gespeicherter FSK bis 12.
+          - **„Finde einen James-Bond-Film.“** – passende Titel oder Sammlungszuordnung.
+          - **„Finde die Folge von Downton Abbey mit Weihnachten.“** – sucht das Stichwort in Episodentiteln und Inhaltsangaben.
+
+          Filtersuchen liefern eine Auswahl. Sie hängen von den gespeicherten Metadaten ab; fehlende Angaben können Treffer ausschließen. Die FSK-Filterung verwendet die Bibliotheksangaben.
+          Bei ausgewähltem Kodi werden Eigenschaftssuchen zusätzlich direkt als gefilterte Filmliste auf dem Fernseher geöffnet. Du kannst mit der Fernbedienung auswählen. Die Sprach-Nummern beziehen sich weiterhin auf die nummerierte Dashboard-Auswahl. Stimmen Kodi-Filter und Suchtreffer nicht überein oder ist die Quelle eine andere Bibliothek, bleibt die Auswahl im Dashboard; die Sprachantwort weist darauf hin.
+      - type: markdown
+        content: |
+          ## Suchen, prüfen und Treffer bestätigen
+          **„Suche den Film Matrix.“** oder **„Finde den Film Matrix.“** sucht den Titel ohne sofortige Wiedergabe.
+
+          **„Kodi prüfe den Film Matrix.“** oder **„Kodi teste den Film Matrix.“** ist ein Probelauf ohne Wiedergabe. Eine anschließende Auswahl bleibt bei diesem Probelauf ebenfalls ohne Wiedergabe. Das Wort „Kodi“ ist hier Teil der Testformulierung und schaltet die eingestellte Wiedergabe-App nicht um.
+
+          Bei mehreren Treffern nennt die Antwort nummerierte Vorschläge. Weitere Treffer stehen im Dashboard:
+          - **„Nimm Film Nummer eins.“** – bestätigt einen Film.
+          - **„Kodi spiel den ersten Film.“** oder **„Spiele den zweiten Film.“** – bestätigt die entsprechende Nummer der vorherigen Auswahl.
+          - **„Spiel die zweite Folge.“** – bestätigt die zweite angebotene Folge, nicht Folge 2 einer neuen Serie.
+          - **„Kodi nimm Folge Nummer zwei.“** – bestätigt eine Folge bzw. die angefragte Serienauswahl.
+          - **„Kodi nimm den Film von 1999.“** – bestätigt einen Film über das Jahr, wenn damit genau ein Vorschlag übrig bleibt.
+
+          Antworte innerhalb von **zwei Minuten in derselben Unterhaltung**. Eine neue Suche ersetzt die vorherige Auswahl. Bei einer normalen Suche kann die Bestätigung die Wiedergabe starten. Im Dashboard kannst du stattdessen einen Treffer auswählen.
+      - type: markdown
+        content: |
+          ## Zielgerät und Wiedergabe-App
+          Unter **Konfiguration → Medien-Wiedergabe** legst du fest, ob **Kodi** oder **Emby** abspielt. Der Sprachbefehl verwendet diese gespeicherte Auswahl; ein vorangestelltes „Kodi“ wechselt die App nicht.
+
+          **Bei Kodi:** Ohne Raumangabe wird das oben festgelegte Standardgerät verwendet. Zum Beispiel **„Spiel den Film Matrix im Familienzimmer.“** wählt anhand der eingerichteten Raumnamen ein Kodi-Ziel. Zusätzliche Räume müssen zuerst konfiguriert werden. Automatisches Starten von Kodi ist abhängig von der Einrichtung des Zielgeräts.
+
+          **Bei Emby:** Öffne die Emby-App auf dem Fernseher, wähle in der Konfiguration Emby, lade mit **„Emby-Geräte aktualisieren“** die Geräte, wähle die gewünschte App und speichere. Die Befehle gehen an dieses ausdrücklich ausgewählte Emby-Ziel. Ist es nicht verfügbar, wird kein anderes Gerät ersatzweise verwendet. Die App muss erreichbar sein; automatisches Starten der Emby-App ist noch nicht eingerichtet.
+
+          Die Anzeige **„Emby-Server erreichbar“** bestätigt nur den Server. Sie sagt nicht, dass die Emby-App auf dem Fernseher bereit ist. Auf der Hauptseite stehen Zielgerät, eingestellter Player und Status getrennt.
+      - type: markdown
+        content: |
+          ## Wenn etwas nicht klappt
+          - **Kein Treffer:** vollständigen Titel, gegebenenfalls Jahr und die ausgewählte Medienquelle prüfen.
+          - **Mehrere Treffer:** Nummer bestätigen oder im Dashboard auswählen.
+          - **Keine aktuelle Auswahl:** vollständigen Befehl erneut sprechen; die Auswahl ist abgelaufen oder gehört zu einer anderen Unterhaltung.
+          - **Gerät nicht erreichbar:** Fernseher und die gewählte App prüfen. Bei Emby die Geräteliste aktualisieren und das richtige Benutzerprofil beachten.
+          - **Start nicht bestätigt:** zuerst auf dem Fernseher und in der Registerkarte Mediensuche nachsehen, bevor du erneut startest.
+
+          In **Mediensuche** findest du die letzte Aktion, Rückmeldungen und die Diagnosehistorie. Allgemeine Sprachbefehle wie „Pause“, „Stopp“ oder „lauter“ gehören derzeit nicht zu diesem Medien-Sprachparser. Nutze dafür die Fernbedienung oder bei Emby die angebotenen Bedienelemente; diese sind nur aktiv, wenn der Client die Funktion meldet.

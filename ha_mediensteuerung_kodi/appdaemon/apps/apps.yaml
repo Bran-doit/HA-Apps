@@ -1,0 +1,5 @@
+ha_mediensteuerung_kodi:
+  module: ha_mediensteuerung_kodi.hmk_backends
+  class: HAMedienBackends
+  pin_app: true
+  data_dir: /config/ha_mediensteuerung_kodi

@@ -35,3 +35,7 @@ Siehe [Arbeitsanweisungen](AGENTS.md) und [Veröffentlichungsablauf](CONTRIBUTIN
 ## Referenzen
 
 [Repository-Struktur](https://contributors.home-assistant.io/apps/guides/repository/) · [Veröffentlichung](https://contributors.home-assistant.io/apps/guides/publishing/)
+
+## Entwicklungsstände
+
+- [HA-Mediensteuerung auf Kodi](ha_mediensteuerung_kodi/README.md) – AppDaemon-/HA-Integration; Quellcodeexport, noch kein installierbares Supervisor-Add-on. [Änderungsverlauf](ha_mediensteuerung_kodi/CHANGELOG.md).

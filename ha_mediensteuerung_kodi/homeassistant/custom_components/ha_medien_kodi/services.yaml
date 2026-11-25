@@ -1,0 +1,19 @@
+process:
+  name: Kodi-Sprachbefehl
+  description: Verarbeitet einfache deutsche Film- und Episodenbefehle lokal über AppDaemon.
+  fields:
+    text:
+      name: Befehl
+      required: true
+      example: Spiel den Film Matrix
+      selector:
+        text:
+    session:
+      name: Dialogkennung
+      selector:
+        text:
+    dry_run:
+      name: Nur prüfen
+      default: false
+      selector:
+        boolean:

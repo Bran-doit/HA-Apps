@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.venv/
+players.json
+output_preferences.json
+last_report.json
+*_report.json
+posters/
+*.bak
+.env
+.env.*

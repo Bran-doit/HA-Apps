@@ -1,0 +1,27 @@
+ha_medien_kodi:
+
+automation:
+  - id: ha_medien_kodi_explicit_voice
+    alias: HA-Mediensteuerung auf Kodi - direkte Sprachbefehle
+    mode: queued
+    max: 5
+    triggers:
+      - trigger: conversation
+        command:
+          - "Kodi {kodi_text}"
+          - "(Suche|Such|Finde|Findest du) [mir] [(einen|den|die)] (Film|Filme|Kinderfilm|Kinderfilme|Familienfilm|Familienfilme) {kodi_text}"
+          - "(Suche|Such|Finde|Findest du) [mir] [(einen|den|die)] (Kinderfilm|Kinderfilme|Familienfilm|Familienfilme)"
+          - "(Suche|Such|Finde|Findest du) [mir] [(die|eine)] Folge {kodi_text}"
+          - "(Suche|Such|Finde|Findest du) [mir] [die] nächste [ungesehene] Folge {kodi_text}"
+          - "(Suche|Such|Finde|Findest du) [mir] [bitte] [die] (neueste|neuste|zuletzt hinzugefügte) (Folge|Staffel) {kodi_text}"
+          - "Starte [den] Film {kodi_text}"
+          - "Starte [die] Folge {kodi_text}"
+          - "Starte [die] Staffel {kodi_text}"
+          - "(Suche|Such|Finde|Findest du) [mir] [bitte] [(einen|den|die)] (Science-Fiction-Film|Science-Fiction-Filme|Science-Fiction Film|Science-Fiction Filme|Science Fiction-Film|Science Fiction-Filme|Science Fiction Film|Science Fiction Filme|Sci-Fi-Film|Sci-Fi-Filme|Sci-Fi Film|Sci-Fi Filme|Sci Fi-Film|Sci Fi-Filme|Sci Fi Film|Sci Fi Filme|James-Bond-Film|James-Bond-Filme|James-Bond Film|James-Bond Filme|James Bond-Film|James Bond-Filme|James Bond Film|James Bond Filme|Thriller-Film|Thriller-Filme|Thriller Film|Thriller Filme|Action-Film|Action-Filme|Action Film|Action Filme|Drama-Film|Drama-Filme|Drama Film|Drama Filme|Animation-Film|Animation-Filme|Animation Film|Animation Filme|Fantasy-Film|Fantasy-Filme|Fantasy Film|Fantasy Filme|Horror-Film|Horror-Filme|Horror Film|Horror Filme|Abenteuer-Film|Abenteuer-Filme|Abenteuer Film|Abenteuer Filme|Western-Film|Western-Filme|Western Film|Western Filme|Komödie-Film|Komödie-Filme|Komödie Film|Komödie Filme|Familien-Film|Familien-Filme|Familien Film|Familien Filme) [{kodi_text}]"
+    actions:
+      - action: ha_medien_kodi.process
+        data:
+          text: "{{ trigger.sentence }}"
+          session: "{{ trigger.device_id | default('assist', true) }}"
+        response_variable: kodi_voice
+      - set_conversation_response: "{{ kodi_voice.speech or 'Bitte sage zum Beispiel: Spiel den Film Matrix.' }}"
