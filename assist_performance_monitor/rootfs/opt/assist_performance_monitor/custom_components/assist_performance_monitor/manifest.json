@@ -1,0 +1,11 @@
+{
+  "domain": "assist_performance_monitor",
+  "name": "Assist Performance Monitor",
+  "codeowners": [],
+  "config_flow": true,
+  "dependencies": ["assist_pipeline"],
+  "documentation": "https://github.com/home-assistant/core/tree/2026.7.4/homeassistant/components/assist_pipeline",
+  "integration_type": "service",
+  "iot_class": "local_polling",
+  "version": "0.2.2"
+}
