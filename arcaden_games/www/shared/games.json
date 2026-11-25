@@ -1,0 +1,24 @@
+[
+  {
+    "id": "pacman",
+    "title": "Pac-Man",
+    "description": "Labyrinth & Geister",
+    "players": "1–2 Spieler",
+    "controls": {
+      "primary": "Menü bestätigen"
+    },
+    "controlHint": "Richtungen bewegen Pac-Man."
+  },
+  {
+    "id": "pong",
+    "title": "Pong",
+    "description": "Das Duell am Bildschirm",
+    "players": "1–2 Spieler",
+    "controls": {
+      "up": "Schläger nach oben",
+      "down": "Schläger nach unten",
+      "primary": "Menü bestätigen"
+    },
+    "controlHint": "Spieler 1 und 2 bewegen ihre Schläger mit Oben/Unten."
+  }
+]

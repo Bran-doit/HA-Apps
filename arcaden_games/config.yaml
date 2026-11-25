@@ -1,0 +1,22 @@
+name: Arcaden Games
+version: "1.10.2"
+slug: arcaden_games
+description: Pac-Man und Pong mit gemeinsamer Controller-Steuerung.
+arch:
+  - aarch64
+  - amd64
+startup: application
+boot: auto
+init: false
+ingress: true
+ingress_port: 8100
+ingress_entry: index.html
+panel_icon: mdi:controller-classic
+panel_title: Arcaden Games
+ports:
+  8100/tcp: 8100
+ports_description:
+  8100/tcp: Spielseiten für TV-Webseiten und andere Geräte
+webui: http://[HOST]:[PORT:8100]/
+options: {}
+schema: {}

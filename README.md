@@ -35,3 +35,7 @@ Siehe [Arbeitsanweisungen](AGENTS.md) und [Veröffentlichungsablauf](CONTRIBUTIN
 ## Referenzen
 
 [Repository-Struktur](https://contributors.home-assistant.io/apps/guides/repository/) · [Veröffentlichung](https://contributors.home-assistant.io/apps/guides/publishing/)
+
+## Entwicklungsstände auf diesem Branch
+
+- [Arcaden Games: Pac-Man und Pong](arcaden_games/README.md) – Quellsicherung, noch nicht stabil freigegeben. [Änderungen](arcaden_games/CHANGELOG.md).
