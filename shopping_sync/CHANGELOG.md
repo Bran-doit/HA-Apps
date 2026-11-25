@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1
+
+- Supervisor verwendet die direkt veroeffentlichten Architektur-Images.
+
 ## 0.1.0
 
 - Erste installierbare Home-Assistant-Supervisor-App.
