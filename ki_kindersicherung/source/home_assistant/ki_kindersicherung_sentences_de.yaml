@@ -1,0 +1,129 @@
+language: de
+intents:
+  KiKindersicherungAktivieren:
+    data:
+      - sentences:
+          - "(aktiviere|starte|schalte) [die] kindersicherung [ein]"
+  KiKindersicherungBedingtAktivieren:
+    data:
+      - sentences:
+          - "(aktiviere|starte|schalte) [die] bedingte kindersicherung [ein]"
+          - "bedingte kindersicherung (aktivieren|starten|einschalten)"
+  KiKindersicherungAntwort:
+    data:
+      - sentences:
+          - "(antwort|lösung) {antwort}"
+          - "[die] antwort ist {antwort}"
+          - "meine antwort ist {antwort}"
+          - "meine antwort lautet {antwort}"
+          - "[die] lösung ist {antwort}"
+          - "ich glaube [die antwort ist] {antwort}"
+  KiKindersicherungWiederholen:
+    data:
+      - sentences:
+          - "[die] aufgabe [bitte] wiederholen"
+          - "wiederhole [bitte] [die] aufgabe"
+  KiKindersicherungNeueAufgabe:
+    data:
+      - sentences:
+          - "(andere|neue) aufgabe"
+          - "stelle [bitte] eine (andere|neue) aufgabe"
+  KiKindersicherungEineAufgabe:
+    data:
+      - sentences:
+          - "aufgabe"
+          - "eine aufgabe [bitte]"
+          - "eine aufgabe für david [bitte]"
+          - "stelle [mir] [bitte] eine aufgabe"
+          - "stelle david [bitte] eine aufgabe"
+  KiKindersicherungFreieAufgabeThema:
+    data:
+      - sentences:
+          - "eine aufgabe (in|aus|zu|zum|zur) {aufgabengebiet} [für david] [bitte]"
+          - "stelle [david] [bitte] eine aufgabe (in|aus|zu|zum|zur) {aufgabengebiet}"
+          - "eine {aufgabengebiet} aufgabe [für david] [bitte]"
+  KiKindersicherungMathematikaufgabe:
+    data:
+      - sentences:
+          - "eine mathematikaufgabe [für david] [bitte]"
+          - "stelle [david] [bitte] eine mathematikaufgabe"
+  KiKindersicherungDeutschaufgabe:
+    data:
+      - sentences:
+          - "eine deutschaufgabe [für david] [bitte]"
+          - "stelle [david] [bitte] eine deutschaufgabe"
+  KiKindersicherungSachkundeaufgabe:
+    data:
+      - sentences:
+          - "eine sachkundeaufgabe [für david] [bitte]"
+          - "eine sachaufgabe [für david] [bitte]"
+          - "stelle [david] [bitte] eine sachkundeaufgabe"
+          - "stelle [david] [bitte] eine sachaufgabe"
+  KiKindersicherungKreativaufgabe:
+    data:
+      - sentences:
+          - "eine kreativaufgabe [für david] [bitte]"
+          - "stelle [david] [bitte] eine kreativaufgabe"
+  KiKindersicherungAufgabeBeenden:
+    data:
+      - sentences:
+          - "[die] [freie] aufgabe (beenden|stoppen)"
+          - "keine aufgabe mehr"
+  KiKindersicherungKnobelaufgabe:
+    data:
+      - sentences:
+          - "eine knobelaufgabe [bitte]"
+          - "stelle [mir] [bitte] eine knobelaufgabe"
+  KiKindersicherungSchulaufgabe:
+    data:
+      - sentences:
+          - "eine schulaufgabe [bitte]"
+          - "stelle [mir] [bitte] eine schulaufgabe"
+  KiKindersicherungErwachsenenfrage:
+    data:
+      - sentences:
+          - "eine erwachsenenfrage [bitte]"
+          - "stelle [mir] [bitte] eine erwachsenenfrage"
+          - "eine frage für erwachsene [bitte]"
+          - "stelle [mir] [bitte] eine frage für erwachsene"
+          - "eine wissensfrage für erwachsene [bitte]"
+  KiKindersicherungZeitversetzt:
+    data:
+      - sentences:
+          - "(aktiviere|starte) [die] kindersicherung in {minuten} minuten"
+  KiKindersicherungDeaktivieren:
+    data:
+      - sentences:
+          - "(deaktiviere|beende|stoppe) [die] kindersicherung [mit] [pin] {pin}"
+  KiWissensquizStart:
+    data:
+      - sentences:
+          - "(starte|beginne) [das] wissensquiz"
+          - "wissensquiz (starten|beginnen)"
+  KiWissensquizNaechsterSpieler:
+    data:
+      - sentences:
+          - "(nächster|naechster) spieler"
+          - "(nächste|naechste) quizfrage"
+  KiWissensquizWiederholen:
+    data:
+      - sentences:
+          - "[die] [quiz] frage [bitte] wiederholen"
+          - "wiederhole [bitte] [die] quizfrage"
+  KiWissensquizBeenden:
+    data:
+      - sentences:
+          - "[das] wissensquiz (beenden|stoppen)"
+          - "quiz (beenden|stoppen)"
+
+lists:
+  antwort:
+    wildcard: true
+  minuten:
+    range:
+      from: 1
+      to: 240
+  pin:
+    wildcard: true
+  aufgabengebiet:
+    wildcard: true

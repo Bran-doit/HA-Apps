@@ -1,0 +1,426 @@
+# Home-Assistant-Helfer für die AppDaemon-Anwendung KI-Kindersicherung.
+input_boolean:
+  ki_kinderschutz_aktiviert:
+    name: Kindersicherung – Skript aktiviert
+    icon: mdi:shield-account
+  ki_kinderschutz_auto_refresh:
+    name: Kindersicherung – Log automatisch aktualisieren
+    icon: mdi:refresh-auto
+
+input_button:
+  ki_kinderschutz_aktivieren:
+    name: Kindersicherung aktivieren
+    icon: mdi:lock
+  ki_bedingt_aktivieren:
+    name: Bedingte Kindersicherung aktivieren
+    icon: mdi:head-question
+  ki_kinderschutz_deaktivieren:
+    name: Kindersicherung deaktivieren
+    icon: mdi:lock-open
+  ki_aufgabe_freigeben:
+    name: Aufgabe manuell freigeben
+    icon: mdi:check-circle
+  ki_aufgabe_ablehnen:
+    name: Aufgabe ablehnen
+    icon: mdi:close-circle
+  ki_neue_aufgabe:
+    name: Neue Aufgabe
+    icon: mdi:reload
+  ki_log_aktualisieren:
+    name: Log aktualisieren
+    icon: mdi:refresh
+  ki_log_leeren:
+    name: Log leeren
+    icon: mdi:delete
+  ki_konfiguration_speichern:
+    name: Konfiguration speichern
+    icon: mdi:content-save
+  ki_konfiguration_neuladen:
+    name: Konfiguration neu laden
+    icon: mdi:restart
+
+input_text:
+  ki_kinderschutz_antwort:
+    name: Antwort
+    max: 255
+    icon: mdi:message-reply-text
+  ki_basis_prompt:
+    name: Basis-Prompt
+    max: 255
+  ki_hinweis_prompt:
+    name: Hinweis-Prompt
+    max: 255
+  ki_hilfe_prompt:
+    name: Hilfe bei falscher Antwort
+    max: 255
+  ki_thema_1:
+    name: Themenbereich 1
+    initial: Mathematik
+  ki_thema_2:
+    name: Themenbereich 2
+    initial: Deutsch
+  ki_thema_3:
+    name: Themenbereich 3
+    initial: Sachkunde
+  ki_thema_4:
+    name: Themenbereich 4
+    initial: Kreativität
+
+input_number:
+  ki_freigabeintervall:
+    name: Freigabeintervall
+    min: 1
+    max: 180
+    step: 1
+    unit_of_measurement: min
+    mode: box
+  ki_maximale_freigaben:
+    name: Maximale Freigaben
+    min: 0
+    max: 999
+    step: 1
+    mode: box
+  ki_antwortfrist:
+    name: Antwortfrist
+    min: 1
+    max: 30
+    step: 1
+    unit_of_measurement: min
+    mode: box
+  ki_maximale_versuche:
+    name: Maximale Versuche
+    min: 1
+    max: 10
+    step: 1
+    mode: box
+  ki_gewicht_1:
+    name: Gewicht Themenbereich 1
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+  ki_gewicht_2:
+    name: Gewicht Themenbereich 2
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+  ki_gewicht_3:
+    name: Gewicht Themenbereich 3
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+  ki_gewicht_4:
+    name: Gewicht Themenbereich 4
+    min: 0
+    max: 100
+    step: 1
+    unit_of_measurement: "%"
+
+input_select:
+  ki_medienplayer_1:
+    name: Erster Medienplayer
+    options:
+      - media_player.ki_kinderschutz_dummy
+  ki_medienplayer_2:
+    name: Zweiter Medienplayer
+    options:
+      - keine
+      - media_player.ki_kinderschutz_dummy
+  ki_standard_sprachgeraet:
+    name: Standardsprachgerät
+    options:
+      - keine
+  ki_sprachsynthese:
+    name: Sprachsynthese
+    options:
+      - tts.piper
+      - tts.openai_tts
+  ki_ki_agent:
+    name: Externe KI
+    options:
+      - conversation.google_ai_conversation
+      - conversation.openai_conversation
+
+input_datetime:
+  ki_sperre_bis:
+    name: Kindersicherung bis
+    has_date: false
+    has_time: true
+
+template:
+  - sensor:
+      - name: Kindersicherung Sprachgeräte
+        unique_id: ki_sprachgeraete
+        state: >-
+          {% set ns = namespace(count=0) %}
+          {% for satellite in states.assist_satellite %}
+            {% set players = device_entities(device_id(satellite.entity_id)) | select('match', '^media_player\\.') | list %}
+            {% if players | count > 0 %}{% set ns.count = ns.count + 1 %}{% endif %}
+          {% endfor %}
+          {{ ns.count }}
+        attributes:
+          devices: >-
+            {% set ns = namespace(items=[]) %}
+            {% for satellite in states.assist_satellite %}
+              {% set dev = device_id(satellite.entity_id) %}
+              {% set players = device_entities(dev) | select('match', '^media_player\\.') | list %}
+              {% if players | count > 0 %}
+                {% set label = device_attr(dev, 'name_by_user') or device_attr(dev, 'name') or state_attr(satellite.entity_id, 'friendly_name') or satellite.entity_id %}
+                {% set ns.items = ns.items + [{'satellite': satellite.entity_id, 'device_id': dev, 'media_player': players[0], 'name': label}] %}
+              {% endif %}
+            {% endfor %}
+            {{ ns.items }}
+      - name: Kindersicherung Sprachraum Media Player
+        unique_id: ki_sprachraum_media_player
+        state: >-
+          {% set voice = states('input_select.ki_standard_sprachgeraet') %}
+          {{ area_id(voice) or 'kein_bereich' }}
+        attributes:
+          area_name: >-
+            {% set voice = states('input_select.ki_standard_sprachgeraet') %}
+            {{ area_name(voice) or 'Kein Bereich' }}
+          media_players: >-
+            {% set voice = states('input_select.ki_standard_sprachgeraet') %}
+            {% set room = area_id(voice) %}
+            {{ area_entities(room) | select('match', '^media_player\\.') | list if room else [] }}
+
+script:
+  ki_sprachbefehl:
+    alias: Kindersicherung Sprachbefehle
+    description: >-
+      Ausschließliches Werkzeug für Sprachbefehle der Kindersicherung. Verwende dieses
+      Skript nur bei Aktivierung oder Deaktivierung der Kindersicherung, beim Anfordern,
+      Beantworten, Wiederholen, Wechseln oder Beenden einer Lernaufgabe. Nicht verwenden
+      für Filme, Serien, Musik, Radio, Medienwiedergabe, Räume, Geräte oder allgemeine
+      Fragen ohne ausdrücklichen Bezug zu Kindersicherung oder Aufgabe.
+      Beispiele: "Kindersicherung aktivieren", "bedingte Kindersicherung aktivieren",
+      "Antwort neun", "Lösung Frühling Sommer Herbst Winter", "Aufgabe wiederholen",
+      "andere Aufgabe", "eine Frage für Erwachsene" und "Kindersicherung
+      deaktivieren 2468". Übergib die
+      vollständige Äußerung unverändert im Feld text. Gib nach dem Aufruf keine
+      eigene Bestätigung oder Antwort aus. Die Kindersicherung übernimmt die
+      gesamte hörbare Rückmeldung selbst.
+      Das Skript ist außerdem die Sprachschnittstelle des eigenständigen Wissensquiz.
+      Beispiele: "Wissensquiz starten", "Antwort B", "nächster Spieler",
+      "Quizfrage wiederholen" und "Wissensquiz beenden".
+    icon: mdi:shield-microphone
+    fields:
+      text:
+        name: Kindersicherungsbefehl
+        description: >-
+          Vollständiger erkannter Sprachtext, zum Beispiel "bedingte Kindersicherung
+          aktivieren", "Antwort 12" oder "Kindersicherung deaktivieren 2468".
+        required: true
+        example: bedingte Kindersicherung aktivieren
+        selector:
+          text:
+      device:
+        name: Sprachgerät
+        description: >-
+          Optionale Entitäts- oder Gerätekennung des Assist-Geräts, das die Äußerung
+          aufgenommen hat. Bei Aufgaben wird die Antwort an dieses Gerät ausgegeben.
+        required: false
+        default: home_assistant
+        selector:
+          text:
+      user:
+        name: Benutzer
+        description: Optionale Benutzerkennung aus Home Assistant.
+        required: false
+        default: ""
+        selector:
+          text:
+      source:
+        name: Quelle
+        description: Herkunft des Befehls, zum Beispiel assist, dashboard oder test.
+        required: false
+        default: assist
+        selector:
+          text:
+    mode: queued
+    sequence:
+      - event: ki_kinderschutz_sprachbefehl
+        event_data:
+          text: "{{ text }}"
+          device: "{{ device | default('home_assistant') }}"
+          user: "{{ user | default('') }}"
+          source: "{{ source | default('assist') }}"
+      - variables:
+          kindersicherung_ergebnis:
+            status: angenommen
+            message: ""
+            speech: ""
+      - stop: "{{ kindersicherung_ergebnis.message }}"
+        response_variable: kindersicherung_ergebnis
+
+intent_script:
+  KiKindersicherungAktivieren:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Kindersicherung aktivieren
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiKindersicherungBedingtAktivieren:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Bedingte Kindersicherung aktivieren
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiKindersicherungAntwort:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: "Antwort {{ antwort }}"
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiKindersicherungWiederholen:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Aufgabe wiederholen
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiKindersicherungNeueAufgabe:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Andere Aufgabe
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiKindersicherungEineAufgabe:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Eine Aufgabe bitte
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiKindersicherungFreieAufgabeThema:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: "Eine Aufgabe {{ aufgabengebiet }}"
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiKindersicherungMathematikaufgabe:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Eine Mathematikaufgabe
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiKindersicherungDeutschaufgabe:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Eine Deutschaufgabe
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiKindersicherungSachkundeaufgabe:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Eine Sachkundeaufgabe
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiKindersicherungKreativaufgabe:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Eine Kreativaufgabe
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiKindersicherungAufgabeBeenden:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Aufgabe beenden
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiKindersicherungKnobelaufgabe:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Eine Knobelaufgabe
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiKindersicherungSchulaufgabe:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Eine Schulaufgabe
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiKindersicherungErwachsenenfrage:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Eine Frage für Erwachsene
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiKindersicherungZeitversetzt:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: "Kindersicherung in {{ minuten }} Minuten aktivieren"
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiKindersicherungDeaktivieren:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: "Kindersicherung deaktivieren {{ pin }}"
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiWissensquizStart:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Wissensquiz starten
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiWissensquizNaechsterSpieler:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Nächster Spieler
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiWissensquizWiederholen:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Quizfrage wiederholen
+          source: lokaler_intent
+    speech:
+      text: ""
+  KiWissensquizBeenden:
+    action:
+      - action: script.ki_sprachbefehl
+        data:
+          text: Wissensquiz beenden
+          source: lokaler_intent
+    speech:
+      text: ""

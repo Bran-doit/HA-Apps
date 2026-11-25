@@ -1,0 +1,20 @@
+enabled: false
+tv_display_enabled: false
+quiz_enabled: false
+media_players: []
+voice_player: ""
+conversation_agent: ""
+speech_engine: tts.piper
+language: de
+base_prompt: Stelle genau eine kurze, freundliche und altersgerechte Aufgabe für ein Kind.
+quiz_child_attempts: 3
+quiz_adult_attempts: 2
+topics:
+  - name: Mathematik
+    weight: 45
+  - name: Deutsch
+    weight: 25
+  - name: Sachkunde
+    weight: 20
+  - name: Kreativität
+    weight: 10

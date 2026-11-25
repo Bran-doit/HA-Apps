@@ -1,0 +1,124 @@
+{
+  "version": 1,
+  "minor_version": 1,
+  "key": "lovelace.ki_kindersicherung",
+  "data": {
+    "config": {
+      "title": "Kindersicherung",
+      "views": [
+        {
+          "title": "Übersicht",
+          "path": "uebersicht",
+          "icon": "mdi:view-dashboard",
+          "type": "panel",
+          "cards": [
+            {
+              "type": "iframe",
+              "url": "__APPDAEMON_URL__/app/ki_kindersicherung_admin?embedded=1&tab=overview",
+              "aspect_ratio": "100%"
+            }
+          ],
+          "badges": []
+        },
+        {
+          "title": "Konfiguration",
+          "path": "konfiguration",
+          "icon": "mdi:cog",
+          "type": "panel",
+          "cards": [
+            {
+              "type": "iframe",
+              "url": "__APPDAEMON_URL__/app/ki_kindersicherung_admin?embedded=1&tab=config",
+              "aspect_ratio": "100%"
+            }
+          ],
+          "badges": []
+        },
+        {
+          "title": "Aufgabengebiete",
+          "path": "aufgabengebiete",
+          "icon": "mdi:head-lightbulb-outline",
+          "type": "panel",
+          "cards": [
+            {
+              "type": "iframe",
+              "url": "__APPDAEMON_URL__/app/ki_kindersicherung_admin?embedded=1&tab=topics",
+              "aspect_ratio": "100%"
+            }
+          ],
+          "badges": []
+        },
+        {
+          "title": "Erwachsenenwissen",
+          "path": "erwachsenenwissen",
+          "icon": "mdi:brain",
+          "type": "panel",
+          "cards": [
+            {
+              "type": "iframe",
+              "url": "__APPDAEMON_URL__/app/ki_kindersicherung_admin?embedded=1&tab=adult-topics",
+              "aspect_ratio": "100%"
+            }
+          ],
+          "badges": []
+        },
+        {
+          "title": "Konversation",
+          "path": "konversation",
+          "icon": "mdi:message-text-outline",
+          "type": "panel",
+          "cards": [
+            {
+              "type": "iframe",
+              "url": "__APPDAEMON_URL__/app/ki_kindersicherung_admin?embedded=1&tab=conversation",
+              "aspect_ratio": "100%"
+            }
+          ],
+          "badges": []
+        },
+        {
+          "title": "TV-Ausgabe",
+          "path": "tv-ausgabe",
+          "icon": "mdi:television-play",
+          "type": "panel",
+          "cards": [
+            {
+              "type": "iframe",
+              "url": "__APPDAEMON_URL__/app/ki_kindersicherung_admin?embedded=1&tab=tv",
+              "aspect_ratio": "100%"
+            }
+          ],
+          "badges": []
+        },
+        {
+          "title": "Wissensquiz",
+          "path": "wissensquiz",
+          "icon": "mdi:trophy-outline",
+          "type": "panel",
+          "cards": [
+            {
+              "type": "iframe",
+              "url": "__APPDAEMON_URL__/app/ki_kindersicherung_admin?embedded=1&tab=quiz",
+              "aspect_ratio": "100%"
+            }
+          ],
+          "badges": []
+        },
+        {
+          "title": "Hilfe",
+          "path": "hilfe",
+          "icon": "mdi:help-circle-outline",
+          "type": "panel",
+          "cards": [
+            {
+              "type": "iframe",
+              "url": "__APPDAEMON_URL__/app/ki_kindersicherung_admin?embedded=1&tab=help",
+              "aspect_ratio": "100%"
+            }
+          ],
+          "badges": []
+        }
+      ]
+    }
+  }
+}
