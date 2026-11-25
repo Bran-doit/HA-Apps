@@ -46,8 +46,8 @@ class InstallTests(unittest.TestCase):
   self.assertTrue(installer.import_preferences(self.legacy,self.data));self.assertFalse(installer.import_preferences(self.legacy,self.data))
   self.assertEqual(json.loads((self.data/'media/output_preferences.json').read_text()),{'show_on_kodi':False,'replace_current':True})
  def test_runtime_never_saves_token(self):
-  with patch.object(Path,'symlink_to'):
-   config=prepare_runtime(self.data,self.bundle,'TEST-SECRET-NOT-TO-PERSIST')
+  (self.bundle/'appdaemon/apps/ha_mediensteuerung_kodi').mkdir(parents=True)
+  config=prepare_runtime(self.data,self.bundle,'TEST-SECRET-NOT-TO-PERSIST',self.root/'runtimeapps')
   self.assertNotIn('TEST-SECRET',(config/'appdaemon.yaml').read_text())
   self.assertIn('!env_var SUPERVISOR_TOKEN',(config/'appdaemon.yaml').read_text())
  def test_no_write_outside_ha(self):

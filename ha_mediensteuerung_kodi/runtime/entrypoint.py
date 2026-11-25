@@ -4,6 +4,8 @@ import os
 import re
 import sys
 import time
+import shutil
+import tempfile
 from pathlib import Path
 import yaml
 from installer import SetupError, atomic, install, import_preferences, legacy_active
@@ -12,12 +14,12 @@ BUNDLE=Path('/opt/medien')
 DATA=Path('/data')
 HA=Path('/homeassistant')
 
-def prepare_runtime(data,bundle,token):
+def prepare_runtime(data,bundle,token,apps_dir=None):
     config=data/'appdaemon';config.mkdir(parents=True,exist_ok=True)
     (data/'media').mkdir(exist_ok=True)
-    apps=config/'apps';apps.mkdir(exist_ok=True)
-    link=apps/'ha_mediensteuerung_kodi'
-    if not link.exists():link.symlink_to(bundle/'appdaemon/apps/ha_mediensteuerung_kodi',target_is_directory=True)
+    apps=apps_dir or Path(tempfile.mkdtemp(prefix='medien-apps-'))
+    apps.mkdir(parents=True,exist_ok=True)
+    shutil.copytree(bundle/'appdaemon/apps/ha_mediensteuerung_kodi',apps/'ha_mediensteuerung_kodi',ignore=shutil.ignore_patterns('__pycache__','*.pyc'),dirs_exist_ok=True)
     atomic(apps/'apps.yaml',yaml.safe_dump({'ha_mediensteuerung_kodi':{'module':'ha_mediensteuerung_kodi.hmk_backends','class':'HAMedienBackends','pin_app':True,'data_dir':str(data/'media')}}).encode())
     # Token is read from environment by AppDaemon; never persisted in a config file.
     config_text="""appdaemon:
@@ -36,6 +38,7 @@ logs:
   error_log:
     filename: STDERR
 """
+    config_text=config_text.replace('appdaemon:\n','appdaemon:\n  app_dir: '+json.dumps(str(apps))+'\n',1)
     atomic(config/'appdaemon.yaml',config_text.encode())
     return config
 
