@@ -31,5 +31,5 @@ schema:
   realtime: "bool"
   lists:
     - "str"
-image: "ghcr.io/bran-doit/shopping-sync-{arch}"
+image: "ghcr.io/bran-doit/shopping-sync"
 
